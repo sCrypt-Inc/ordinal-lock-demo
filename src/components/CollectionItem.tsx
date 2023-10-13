@@ -1,6 +1,6 @@
 import { OrdinalLock } from "../contracts/ordinalLock"
-import { toHex, Scrypt, findSig, PubKey, MethodCallOptions, SensiletSigner, ScryptProvider } from 'scrypt-ts'
-import { OrdNFTP2PKH } from 'scrypt-ord'
+import { toHex, Scrypt, findSig, PubKey, MethodCallOptions, SensiletSigner } from 'scrypt-ts'
+import { OrdNFTP2PKH, OrdProvider } from 'scrypt-ord'
 import Inscription from "./Inscription"
 import { useState } from "react"
 
@@ -27,7 +27,7 @@ export default function CollectionItem(props) {
     }
 
     async function sell() {
-        const signer = new SensiletSigner(new ScryptProvider())
+        const signer = new SensiletSigner(new OrdProvider())
         const publicKey = await signer.getDefaultPubKey()
 
         console.log(`seller public key: ${publicKey.toString()}`)
@@ -52,7 +52,7 @@ export default function CollectionItem(props) {
             } as MethodCallOptions<OrdNFTP2PKH>
         )
         console.log(`sell tx: ${tx.id}`)
-        onSell(tx, instance, data)
+        onSell(instance, data)
     }
 
     function amountOnChange(e) {
