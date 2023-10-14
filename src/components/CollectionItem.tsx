@@ -1,5 +1,5 @@
 import { OrdinalLock } from "../contracts/ordinalLock"
-import { toHex, Scrypt, findSig, PubKey, MethodCallOptions, SensiletSigner } from 'scrypt-ts'
+import { toHex, findSig, PubKey, MethodCallOptions, SensiletSigner, DefaultProvider } from 'scrypt-ts'
 import { OrdNFTP2PKH, OrdProvider } from 'scrypt-ord'
 import Inscription from "./Inscription"
 import { useState } from "react"
@@ -12,7 +12,9 @@ export default function CollectionItem(props) {
     const [amount, setAmount] = useState(10n)
 
     async function getScript(txId: string, vout: number) {
-        const tx = await Scrypt.bsvApi.getTransaction(txId)
+        const provider = new DefaultProvider()
+        await provider.connect()
+        const tx = await provider.getTransaction(txId)
         return tx.outputs[vout].script
     }
 

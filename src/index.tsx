@@ -4,14 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { Scrypt, bsv } from 'scrypt-ts'
 import artifact from '../artifacts/ordinalLock.json'
 import { OrdinalLock } from './contracts/ordinalLock';
-
-Scrypt.init({
-  apiKey: 'mainnet_18UxLNbxhxIGidmunf5yO5JviNiqC7UqqM0GRWLBDaLACmGpY',
-  network: bsv.Networks.mainnet,
-})
 
 OrdinalLock.loadArtifact(artifact)
 
