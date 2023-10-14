@@ -3,7 +3,7 @@ import { SensiletSigner } from 'scrypt-ts';
 import './App.css';
 import Collections from './components/Collections'
 import Selling from './components/Selling';
-import { OrdProvider } from 'scrypt-ord';
+import { OrdiProvider } from 'scrypt-ord';
 
 function App() {
   const [connectedAddress, setConnectedAddress] = useState(undefined)
@@ -35,7 +35,7 @@ function App() {
   }
 
   async function connect() {
-    const signer = new SensiletSigner(new OrdProvider())
+    const signer = new SensiletSigner(new OrdiProvider())
     const { isAuthenticated, error } = await signer.requestAuth()
     if (!isAuthenticated) {
       throw new Error(`Unauthenticated: ${error}`)

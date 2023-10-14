@@ -1,13 +1,13 @@
 import { Addr, SensiletSigner } from "scrypt-ts"
 import Inscription from "./Inscription"
-import { OrdProvider } from "scrypt-ord"
+import { OrdiProvider } from "scrypt-ord"
 
 export default function Selling(props) {
 
     const { data, instance, onPurchase } = props
 
     async function buy() {
-        const signer = new SensiletSigner(new OrdProvider())
+        const signer = new SensiletSigner(new OrdiProvider())
         const address = await signer.getDefaultAddress()
         const { tx } = await instance.methods.purchase(Addr(address.toByteString()))
         console.log(`buy tx: ${tx.id}`)
