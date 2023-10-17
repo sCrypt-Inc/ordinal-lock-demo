@@ -1,8 +1,9 @@
-import { OrdinalLock } from "../contracts/ordinalLock"
-import { toHex, findSig, PubKey, MethodCallOptions, SensiletSigner, DefaultProvider } from 'scrypt-ts'
+import { OrdinalLock } from "../../contracts/ordinalLock"
+import { toHex, findSig, PubKey, MethodCallOptions, DefaultProvider } from 'scrypt-ts'
 import { OrdiNFTP2PKH, OrdiProvider } from 'scrypt-ord'
-import Inscription from "./Inscription"
+import Inscription from "../Inscription"
 import { useState } from "react"
+import { PandaSigner } from "scrypt-ts/dist/bsv/signers"
 
 export default function CollectionItem(props) {
 
@@ -12,7 +13,7 @@ export default function CollectionItem(props) {
     const [amount, setAmount] = useState(10n)
 
     async function getScript(txId: string, vout: number) {
-        const provider = new DefaultProvider()
+        const provider = new OrdiProvider()
         await provider.connect()
         const tx = await provider.getTransaction(txId)
         return tx.outputs[vout].script
@@ -29,8 +30,8 @@ export default function CollectionItem(props) {
     }
 
     async function sell() {
-        const signer = new SensiletSigner(new OrdiProvider())
-        const publicKey = await signer.getDefaultPubKey()
+        const signer = new PandaSigner(new DefaultProvider())
+        const publicKey = await signer.getOrdPubKey()
 
         console.log(`seller public key: ${publicKey.toString()}`)
         console.log(`seller address: ${publicKey.toAddress().toString()}`)
@@ -50,7 +51,7 @@ export default function CollectionItem(props) {
             PubKey(toHex(publicKey)),
             {
                 transfer: instance,
-                pubKeyOrAddrToSign: publicKey,
+                pubKeyOrAddrToSign: publicKey
             } as MethodCallOptions<OrdiNFTP2PKH>
         )
         console.log(`sell tx: ${tx.id}`)

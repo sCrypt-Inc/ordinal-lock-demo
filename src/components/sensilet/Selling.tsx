@@ -1,5 +1,5 @@
 import { Addr, SensiletSigner } from "scrypt-ts"
-import Inscription from "./Inscription"
+import Inscription from "../Inscription"
 import { OrdiProvider } from "scrypt-ord"
 
 export default function Selling(props) {

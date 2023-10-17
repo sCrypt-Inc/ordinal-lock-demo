@@ -1,74 +1,32 @@
-import { useEffect, useState } from 'react';
-import { SensiletSigner } from 'scrypt-ts';
-import './App.css';
-import Collections from './components/Collections'
-import Selling from './components/Selling';
-import { OrdiProvider } from 'scrypt-ord';
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import Sensilet from './Sensilet';
+import Panda from './Panda';
 
-function App() {
-  const [connectedAddress, setConnectedAddress] = useState(undefined)
-  const [collections, setCollections] = useState([])
-  const [instanceOnSell, setInstanceOnSell] = useState(undefined)
-  const [inscriptionOnSell, setInscriptionOnSell] = useState(undefined)
+function Home() {
 
-  useEffect(() => {
-    loadCollections()
-  }, [connectedAddress])
-
-  function loadCollections() {
-    if (connectedAddress) {
-      const url = `https://v3.ordinals.gorillapool.io/api/txos/address/${connectedAddress.toString()}/unspent?bsv20=false`
-      fetch(url).then(r => r.json()).then(r => r.filter(e => e.origin.data.insc.file.type !== 'application/bsv-20')).then(r => setCollections(r))
-    }
-  }
-
-  function onSell(instance, inscription) {
-    setInstanceOnSell(instance)
-    setInscriptionOnSell(inscription)
-    setConnectedAddress(undefined)
-  }
-
-  function onPurchase() {
-    setInstanceOnSell(undefined)
-    setInscriptionOnSell(undefined)
-    setConnectedAddress(undefined)
-  }
-
-  async function connect() {
-    const signer = new SensiletSigner(new OrdiProvider())
-    const { isAuthenticated, error } = await signer.requestAuth()
-    if (!isAuthenticated) {
-      throw new Error(`Unauthenticated: ${error}`)
-    }
-    const address = await signer.getDefaultAddress()
-    setConnectedAddress(address)
-  }
+  const navigate = useNavigate()
 
   return (
     <div className="App">
       <header className="App-header">
-        <label>My Address:
-          {
-            connectedAddress === undefined
-              ? 'Not Connected'
-              : connectedAddress.toString()
-          }
-        </label>
-        {
-          connectedAddress === undefined
-            ? <button onClick={connect}>Connect</button>
-            : ''
-        }
-        {
-          instanceOnSell !== undefined
-            ? <Selling data={inscriptionOnSell} instance={instanceOnSell} onPurchase={onPurchase} />
-            : connectedAddress === undefined
-              ? ''
-              : <Collections data={collections} onSell={onSell} />
-        }
+        <button onClick={() => navigate('/sensilet')}>Sensilet Wallet</button>
+        <br />
+        <button onClick={() => navigate('/panda')}>Panda Wallet</button>
       </header>
     </div>
-  );
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path="/sensilet" element={<Sensilet />} />
+        <Route path="/panda" element={<Panda />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
