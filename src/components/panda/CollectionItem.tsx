@@ -1,5 +1,5 @@
 import { OrdinalLock } from "../../contracts/ordinalLock"
-import { toHex, findSig, PubKey, DefaultProvider } from 'scrypt-ts'
+import { toHex, findSig, PubKey } from 'scrypt-ts'
 import { OrdiNFTP2PKH, OrdiProvider, OrdiMethodCallOptions } from 'scrypt-ord'
 import Inscription from "../Inscription"
 import { useState } from "react"
@@ -30,7 +30,7 @@ export default function CollectionItem(props) {
     }
 
     async function sell() {
-        const signer = new PandaSigner(new DefaultProvider())
+        const signer = new PandaSigner(new OrdiProvider())
         const publicKey = await signer.getOrdPubKey()
 
         console.log(`seller public key: ${publicKey.toString()}`)

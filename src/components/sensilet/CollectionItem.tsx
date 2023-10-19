@@ -1,5 +1,5 @@
 import { OrdinalLock } from "../../contracts/ordinalLock"
-import { toHex, findSig, PubKey, SensiletSigner, DefaultProvider } from 'scrypt-ts'
+import { toHex, findSig, PubKey, SensiletSigner } from 'scrypt-ts'
 import { OrdiNFTP2PKH, OrdiProvider, OrdiMethodCallOptions } from 'scrypt-ord'
 import Inscription from "../Inscription"
 import { useState } from "react"
@@ -12,7 +12,7 @@ export default function CollectionItem(props) {
     const [amount, setAmount] = useState(10n)
 
     async function getScript(txId: string, vout: number) {
-        const provider = new DefaultProvider()
+        const provider = new OrdiProvider()
         await provider.connect()
         const tx = await provider.getTransaction(txId)
         return tx.outputs[vout].script
